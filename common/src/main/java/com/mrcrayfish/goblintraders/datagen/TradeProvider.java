@@ -1,7 +1,9 @@
 package com.mrcrayfish.goblintraders.datagen;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.ITradeType;
@@ -10,7 +12,9 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.VillagerTrades;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -27,7 +32,7 @@ public abstract class TradeProvider implements DataProvider
 {
     private final PackOutput.PathProvider pathProvider;
     private final CompletableFuture<HolderLookup.Provider> lookupProvider;
-    private final Map<EntityType<?>, EnumMap<TradeRarity, List<ITradeType<?>>>> trades = new HashMap<>();
+    private final Map<EntityType<?>, EnumMap<TradeRarity, List<ITradeType>>> trades = new HashMap<>();
 
     protected TradeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
@@ -37,7 +42,7 @@ public abstract class TradeProvider implements DataProvider
 
     protected abstract void registerTrades();
 
-    protected final void addTrade(EntityType<?> type, TradeRarity rarity, ITradeType<?> trade)
+    protected final void addTrade(EntityType<?> type, TradeRarity rarity, ITradeType trade)
     {
         this.trades.putIfAbsent(type, new EnumMap<>(TradeRarity.class));
         this.trades.get(type).putIfAbsent(rarity, new ArrayList<>());
@@ -56,7 +61,9 @@ public abstract class TradeProvider implements DataProvider
                     JsonObject object = new JsonObject();
                     object.addProperty("replace", false);
                     JsonArray tradeArray = new JsonArray();
-                    e2.getValue().forEach(trade -> tradeArray.add(trade.serialize()));
+                    e2.getValue().forEach(trade -> {
+                        ITradeType.CODEC.encodeStart(JsonOps.INSTANCE, trade).result().ifPresent(tradeArray::add);
+                    });
                     object.add("trades", tradeArray);
                     ResourceLocation id = EntityType.getKey(type);
                     Path path = this.pathProvider.json(new ResourceLocation(id.getNamespace(), id.getPath() + "/" + e2.getKey().getKey()));

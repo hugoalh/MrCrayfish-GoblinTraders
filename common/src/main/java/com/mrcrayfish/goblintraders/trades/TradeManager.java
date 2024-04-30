@@ -4,8 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
+import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
+import com.mrcrayfish.goblintraders.trades.type.ITradeType;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,11 +18,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -48,8 +49,14 @@ public class TradeManager implements PreparableReloadListener
     }
 
     private final List<EntityType<?>> traders = new ArrayList<>();
-    private final Map<ResourceLocation, TradeSerializer<?>> serializers = new HashMap<>();
+    private final Map<ResourceLocation, Codec<? extends ITradeType>> codecs = new HashMap<>();
     private Map<EntityType<?>, EntityTrades> entityToTrades = new HashMap<>();
+
+    public TradeManager()
+    {
+        // Register default trades types
+        this.registerTradeCodec(BasicTrade.ID, BasicTrade.CODEC);
+    }
 
     public void registerTrader(EntityType<? extends TraderCreatureEntity> type)
     {
@@ -65,26 +72,23 @@ public class TradeManager implements PreparableReloadListener
         return this.entityToTrades.get(type);
     }
 
-    public void registerTypeSerializer(TradeSerializer<?> serializer)
+    public void registerTradeCodec(ResourceLocation id, Codec<? extends ITradeType> codec)
     {
-        this.serializers.putIfAbsent(serializer.getId(), serializer);
+        this.codecs.putIfAbsent(id, codec);
     }
 
     @Nullable
-    public TradeSerializer<?> getTypeSerializer(ResourceLocation id)
+    public Codec<? extends ITradeType> getTradeCodec(ResourceLocation id)
     {
-        return this.serializers.get(id);
+        return this.codecs.get(id);
     }
 
     @Override
     public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager manager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
     {
-        Map<EntityType<?>, EntityTrades> entityToResourceList = new HashMap<>();
-        return CompletableFuture.allOf(CompletableFuture.runAsync(() ->
-        {
-            this.traders.forEach(entityType ->
-            {
-                String folder = String.format("trades/%s", EntityType.getKey(entityType).getPath());
+        List<CompletableFuture<Pair<EntityType<?>, EntityTrades>>> list = this.traders.stream().map(type -> {
+            return CompletableFuture.supplyAsync(() -> {
+                String folder = String.format("trades/%s", EntityType.getKey(type).getPath());
                 List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;
@@ -92,26 +96,25 @@ public class TradeManager implements PreparableReloadListener
                 });
                 Map<TradeRarity, LinkedHashSet<ResourceLocation>> tradeResources = new EnumMap<>(TradeRarity.class);
                 Arrays.stream(TradeRarity.values()).forEach(rarity -> tradeResources.put(rarity, new LinkedHashSet<>()));
-                resources.forEach(resource ->
-                {
+                resources.forEach(resource -> {
                     String path = resource.getPath().substring(0, resource.getPath().length() - FILE_TYPE_LENGTH_VALUE);
                     String[] splitPath = path.split("/");
                     if(splitPath.length != 3)
                         return;
-                    Arrays.stream(TradeRarity.values()).forEach(rarity ->
-                    {
-                        if(rarity.getKey().equals(splitPath[2]))
-                        {
+                    Arrays.stream(TradeRarity.values()).forEach(rarity -> {
+                        if(rarity.getKey().equals(splitPath[2])) {
                             tradeResources.get(rarity).add(resource);
                         }
                     });
                 });
-                EntityTrades.Builder builder = EntityTrades.Builder.create();
+                EntityTrades.Builder builder = EntityTrades.builder();
                 Arrays.stream(TradeRarity.values()).forEach(rarity -> this.deserializeTrades(manager, builder, rarity, tradeResources.get(rarity)));
-                entityToResourceList.put(entityType, builder.build());
-                this.entityToTrades = ImmutableMap.copyOf(entityToResourceList);
-            });
-        }, backgroundExecutor)).thenCompose(stage::wait);
+                return Pair.<EntityType<?>, EntityTrades>of(type, builder.build());
+            }, backgroundExecutor);
+        }).toList();
+        return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new)).thenCompose(stage::wait).thenAcceptAsync((obj) -> {
+            this.entityToTrades = list.stream().map(CompletableFuture::join).collect(ImmutableMap.toImmutableMap(Pair::left, Pair::right));
+        }, gameExecutor);
     }
 
     private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
@@ -120,7 +123,7 @@ public class TradeManager implements PreparableReloadListener
         {
             manager.getResource(resourceLocation).ifPresent(resource ->
             {
-                try(Reader reader = new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8)))
+                try(Reader reader = resource.openAsReader())
                 {
                     JsonObject object = GsonHelper.fromJson(GSON, reader, JsonObject.class);
                     builder.deserialize(rarity, object);

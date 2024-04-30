@@ -26,7 +26,7 @@ public class MerchantResultSlotMixin
     {
         if(this.merchant instanceof AbstractGoblinEntity)
         {
-            return ModStats.TRADE_WITH_GOBLIN;
+            return ModStats.TRADE_WITH_GOBLIN.get();
         }
         return stat;
     }

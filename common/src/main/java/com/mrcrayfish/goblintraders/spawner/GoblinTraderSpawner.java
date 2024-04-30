@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.scores.ScoreboardSaveData;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -42,9 +44,9 @@ public class GoblinTraderSpawner extends SavedData
     private int runDelay;
     private int spawnChance;
 
-    public GoblinTraderSpawner(MinecraftServer server, ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, IGoblinData data)
+    public GoblinTraderSpawner(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, IGoblinData data)
     {
-        this.server = server;
+        this.server = level.getServer();
         this.level = level;
         this.type = type;
         this.data = data;
@@ -210,14 +212,22 @@ public class GoblinTraderSpawner extends SavedData
             if(level != null)
             {
                 String storageKey = BuiltInRegistries.ENTITY_TYPE.getKey(type) + "_spawner";
-                return Optional.of(level.getDataStorage().computeIfAbsent(tag -> {
-                    return new GoblinTraderSpawner(server, level, type, data.goblinData().get()).load(tag);
-                }, () -> {
-                    return new GoblinTraderSpawner(server, level, type, data.goblinData().get());
-                }, storageKey));
+                return Optional.of(level.getDataStorage().computeIfAbsent(dataFactory(level, type, data), storageKey));
             }
         }
         return Optional.empty();
+    }
+
+    private static SavedData.Factory<GoblinTraderSpawner> dataFactory(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, SpawnData data)
+    {
+        return new SavedData.Factory<>(() -> GoblinTraderSpawner.createSpawner(level, type, data), tag -> {
+            return GoblinTraderSpawner.createSpawner(level, type, data).load(tag);
+        }, DataFixTypes.SAVED_DATA_FORCED_CHUNKS);
+    }
+
+    private static GoblinTraderSpawner createSpawner(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, SpawnData data)
+    {
+        return new GoblinTraderSpawner(level, type, data.goblinData.get());
     }
 
     public static void register(EntityType<? extends AbstractGoblinEntity> type, ResourceKey<Level> levelKey, Supplier<IGoblinData> goblinData)

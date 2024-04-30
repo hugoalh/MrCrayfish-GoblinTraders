@@ -57,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -306,7 +307,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             else if(!this.isClientSide() && (this.getLastHurtByMob() == null || this.getLastHurtByMob() != player))
             {
                 this.setTradingPlayer(player);
-                this.openTradingScreen(player, this.getDisplayName(), 1);
+                this.openTradingScreen(player, Objects.requireNonNull(this.getDisplayName()), 1);
             }
             return InteractionResult.sidedSuccess(this.isClientSide());
         }

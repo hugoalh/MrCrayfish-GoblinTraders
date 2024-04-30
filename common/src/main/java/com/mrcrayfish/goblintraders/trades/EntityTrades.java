@@ -5,6 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mrcrayfish.goblintraders.trades.type.ITradeType;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -19,24 +22,21 @@ import java.util.Map;
 /**
  * Author: MrCrayfish
  */
-public class EntityTrades
+public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> map)
 {
-    private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap;
-
-    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap)
+    public EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> map)
     {
-        this.tradeMap = ImmutableMap.copyOf(tradeMap);
+        this.map = ImmutableMap.copyOf(map);
     }
 
-    public Map<TradeRarity, List<VillagerTrades.ItemListing>> getTradeMap()
+    public static Builder builder()
     {
-        return this.tradeMap;
+        return new Builder();
     }
 
     public static class Builder
     {
-        private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = Util.make(() ->
-        {
+        private final Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = Util.make(() -> {
             Map<TradeRarity, List<VillagerTrades.ItemListing>> map = new EnumMap<>(TradeRarity.class);
             Arrays.stream(TradeRarity.values()).forEach(rarity -> map.put(rarity, new ArrayList<>()));
             return map;
@@ -44,42 +44,29 @@ public class EntityTrades
 
         private Builder() {}
 
-        public EntityTrades build()
-        {
-            return new EntityTrades(this.tradeMap);
-        }
-
-        void deserialize(TradeRarity rarity, JsonObject object)
+        public void deserialize(TradeRarity rarity, JsonObject object)
         {
             List<VillagerTrades.ItemListing> trades = this.tradeMap.get(rarity);
-
             if(GsonHelper.getAsBoolean(object, "replace", false))
             {
                 trades.clear();
             }
-
             JsonArray tradeArray = GsonHelper.getAsJsonArray(object, "trades");
             for(JsonElement tradeElement : tradeArray)
             {
                 JsonObject tradeObject = tradeElement.getAsJsonObject();
                 String rawType = GsonHelper.getAsString(tradeObject, "type");
-                ResourceLocation typeKey = ResourceLocation.tryParse(rawType);
-                if(typeKey == null)
-                {
-                    throw new JsonParseException("");
-                }
-                TradeSerializer<?> serializer = TradeManager.instance().getTypeSerializer(typeKey);
-                if(serializer == null)
-                {
-                    throw new JsonParseException(String.format("Invalid trade type: %s", typeKey));
-                }
-                trades.add(serializer.deserialize(tradeObject).createVillagerTrade());
+                ResourceLocation typeKey = Util.getOrThrow(ResourceLocation.read(rawType), JsonParseException::new);
+                Codec<? extends ITradeType> codec = TradeManager.instance().getTradeCodec(typeKey);
+                if(codec == null) throw new JsonParseException(String.format("Invalid trade type: %s", typeKey));
+                ITradeType trade = Util.getOrThrow(codec.parse(JsonOps.INSTANCE, tradeObject), JsonParseException::new);
+                trades.add(trade.createVillagerTrade());
             }
         }
 
-        static Builder create()
+        public EntityTrades build()
         {
-            return new Builder();
+            return new EntityTrades(this.tradeMap);
         }
     }
 }

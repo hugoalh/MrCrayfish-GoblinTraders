@@ -41,7 +41,7 @@ public class VeinGoblinTrader extends AbstractGoblinEntity
         EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.VEIN_GOBLIN_TRADER.get());
         if(entityTrades != null)
         {
-            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
+            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.map();
             for(TradeRarity rarity : TradeRarity.values())
             {
                 IRaritySettings settings = Config.ENTITIES.veinGoblinTrader.trades.getSettings(rarity);

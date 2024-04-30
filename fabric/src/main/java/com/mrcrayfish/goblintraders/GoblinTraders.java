@@ -2,9 +2,11 @@ package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.framework.FrameworkSetup;
 import com.mrcrayfish.goblintraders.core.ModEntities;
+import com.mrcrayfish.goblintraders.core.ModItems;
 import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
 import com.mrcrayfish.goblintraders.datagen.PlatformLootTableProvider;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
+import com.mrcrayfish.goblintraders.mixin.SpawnEggItemMixin;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.util.Utils;
 import net.fabricmc.api.ModInitializer;
@@ -17,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.SpawnEggItem;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -47,6 +50,8 @@ public class GoblinTraders implements ModInitializer, DataGeneratorEntrypoint
         });
         FabricDefaultAttributeRegistry.register(ModEntities.GOBLIN_TRADER.get(), AbstractGoblinEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.VEIN_GOBLIN_TRADER.get(), AbstractGoblinEntity.createAttributes());
+        SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.GOBLIN_TRADER.get(), ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
+        SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.VEIN_GOBLIN_TRADER.get(), ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
     }
 
     @Override

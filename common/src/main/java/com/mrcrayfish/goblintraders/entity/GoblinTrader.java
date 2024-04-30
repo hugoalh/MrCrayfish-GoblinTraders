@@ -40,7 +40,7 @@ public class GoblinTrader extends AbstractGoblinEntity
         EntityTrades entityTrades = TradeManager.instance().getTrades(ModEntities.GOBLIN_TRADER.get());
         if(entityTrades != null)
         {
-            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.getTradeMap();
+            Map<TradeRarity, List<VillagerTrades.ItemListing>> tradeMap = entityTrades.map();
             for(TradeRarity rarity : TradeRarity.values())
             {
                 IRaritySettings settings = Config.ENTITIES.goblinTrader.trades.getSettings(rarity);

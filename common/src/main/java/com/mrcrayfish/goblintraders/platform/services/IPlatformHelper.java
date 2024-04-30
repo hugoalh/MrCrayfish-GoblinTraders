@@ -15,6 +15,4 @@ import java.util.function.Supplier;
 public interface IPlatformHelper
 {
     SpawnEggItem createSpawnEgg(Supplier<EntityType<? extends AbstractGoblinEntity>> type, int primaryColour, int secondaryColour, Item.Properties properties);
-
-    ItemStack deserializeItem(JsonObject object);
 }

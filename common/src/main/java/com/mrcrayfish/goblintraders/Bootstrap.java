@@ -2,9 +2,6 @@ package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.framework.api.event.TickEvents;
 import com.mrcrayfish.goblintraders.core.ModEntities;
-import com.mrcrayfish.goblintraders.core.ModItems;
-import com.mrcrayfish.goblintraders.core.ModStats;
-import com.mrcrayfish.goblintraders.mixin.SpawnEggItemMixin;
 import com.mrcrayfish.goblintraders.spawner.GoblinTraderSpawner;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
@@ -28,12 +25,7 @@ public class Bootstrap
         TradeManager manager = TradeManager.instance();
         manager.registerTrader(ModEntities.GOBLIN_TRADER.get());
         manager.registerTrader(ModEntities.VEIN_GOBLIN_TRADER.get());
-        manager.registerTypeSerializer(BasicTrade.SERIALIZER);
 
-        ModStats.init();
-
-        SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.GOBLIN_TRADER.get(), ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
-        SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.VEIN_GOBLIN_TRADER.get(), ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
-        SpawnEggItemMixin.goblinTradersGetEggMap().remove(null); // Remove null key
+        //ModStats.init(); // TODO add back stats
     }
 }
