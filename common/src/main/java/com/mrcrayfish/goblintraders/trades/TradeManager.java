@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
@@ -49,7 +50,7 @@ public class TradeManager implements PreparableReloadListener
     }
 
     private final List<EntityType<?>> traders = new ArrayList<>();
-    private final Map<ResourceLocation, Codec<? extends ITradeType>> codecs = new HashMap<>();
+    private final Map<ResourceLocation, MapCodec<? extends ITradeType>> codecs = new HashMap<>();
     private Map<EntityType<?>, EntityTrades> entityToTrades = new HashMap<>();
 
     public TradeManager()
@@ -72,13 +73,13 @@ public class TradeManager implements PreparableReloadListener
         return this.entityToTrades.get(type);
     }
 
-    public void registerTradeCodec(ResourceLocation id, Codec<? extends ITradeType> codec)
+    public void registerTradeCodec(ResourceLocation id, MapCodec<? extends ITradeType> codec)
     {
         this.codecs.putIfAbsent(id, codec);
     }
 
     @Nullable
-    public Codec<? extends ITradeType> getTradeCodec(ResourceLocation id)
+    public MapCodec<? extends ITradeType> getTradeCodec(ResourceLocation id)
     {
         return this.codecs.get(id);
     }

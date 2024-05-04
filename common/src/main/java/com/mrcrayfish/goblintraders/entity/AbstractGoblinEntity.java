@@ -10,9 +10,11 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -44,6 +46,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
@@ -118,11 +121,11 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        this.entityData.define(STUNNED, false);
-        this.entityData.define(STUN_ROTATION, 0F);
+        super.defineSynchedData(builder);
+        builder.define(STUNNED, false);
+        builder.define(STUN_ROTATION, 0F);
     }
 
     public abstract ResourceLocation getTexture();
@@ -135,9 +138,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     @Override
     public ItemStack eat(Level level, ItemStack stack)
     {
-        if(stack.getItem() == this.getFavouriteFood().getItem() && stack.getItem().getFoodProperties() != null)
+        FoodProperties food = stack.get(DataComponents.FOOD);
+        if(stack.getItem() == this.getFavouriteFood().getItem() && food != null)
         {
-            this.setHealth(this.getHealth() + stack.getItem().getFoodProperties().getNutrition());
+            this.setHealth(this.getHealth() + food.nutrition());
         }
         return super.eat(level, stack);
     }
@@ -367,7 +371,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             this.getNavigation().stop();
             this.entityData.set(STUNNED, true);
             this.entityData.set(STUN_ROTATION, this.getStunRotation(source.getEntity()));
-            this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop); //TODO test
+            this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop); //TODO test
             this.stunDelay = 20;
         }
         return attacked;
@@ -418,7 +422,8 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         MerchantOffers offers = this.getOffers();
         if(!offers.isEmpty())
         {
-            compound.put("Offers", offers.createTag());
+            MerchantOffers.CODEC.encodeStart(NbtOps.INSTANCE, offers).result()
+                .ifPresent(tag -> compound.put("Offers", tag));
         }
         compound.putInt("DespawnDelay", this.despawnDelay);
         compound.putInt("RestockDelay", this.restockDelay);

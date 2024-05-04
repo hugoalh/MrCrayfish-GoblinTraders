@@ -55,12 +55,9 @@ public record EntityTrades(Map<TradeRarity, List<VillagerTrades.ItemListing>> ma
             for(JsonElement tradeElement : tradeArray)
             {
                 JsonObject tradeObject = tradeElement.getAsJsonObject();
-                String rawType = GsonHelper.getAsString(tradeObject, "type");
-                ResourceLocation typeKey = Util.getOrThrow(ResourceLocation.read(rawType), JsonParseException::new);
-                Codec<? extends ITradeType> codec = TradeManager.instance().getTradeCodec(typeKey);
-                if(codec == null) throw new JsonParseException(String.format("Invalid trade type: %s", typeKey));
-                ITradeType trade = Util.getOrThrow(codec.parse(JsonOps.INSTANCE, tradeObject), JsonParseException::new);
-                trades.add(trade.createVillagerTrade());
+                ITradeType.CODEC.parse(JsonOps.INSTANCE, tradeObject).result().ifPresent(trade -> {
+                    trades.add(trade.createVillagerTrade());
+                });
             }
         }
 

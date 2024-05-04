@@ -1,24 +1,22 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.CustomCodecs;
 import com.mrcrayfish.goblintraders.trades.GoblinTrade;
-import net.minecraft.Util;
+import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.trading.ItemCost;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * Author: MrCrayfish
@@ -26,13 +24,13 @@ import java.util.stream.Collectors;
 public class BasicTrade implements ITradeType
 {
     public static final ResourceLocation ID = new ResourceLocation(Constants.MOD_ID, "basic");
-    public static final Codec<BasicTrade> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-        CustomCodecs.ITEMSTACK.fieldOf("offer_item")
+    public static final MapCodec<BasicTrade> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+        ItemStack.CODEC.fieldOf("offer_item")
             .forGetter(trade -> trade.offerStack),
-        CustomCodecs.ITEMSTACK.fieldOf("payment_item")
-            .forGetter(trade -> trade.paymentStack),
-        CustomCodecs.ITEMSTACK.optionalFieldOf("secondary_payment_item", ItemStack.EMPTY)
-            .forGetter(trade -> trade.secondaryPaymentStack),
+        ItemStack.CODEC.fieldOf("payment_item")
+            .forGetter(trade -> trade.primaryPayment),
+        ItemStack.CODEC.optionalFieldOf("secondary_payment_item", ItemStack.EMPTY)
+            .forGetter(trade -> trade.secondaryPayment),
         Codec.FLOAT.optionalFieldOf("price_multiplier", 0F)
             .forGetter(trade -> trade.priceMultiplier),
         Codec.INT.optionalFieldOf("max_trades", 12)
@@ -41,25 +39,25 @@ public class BasicTrade implements ITradeType
             .forGetter(trade -> trade.experience),
         Codec.list(CustomCodecs.ENCHANTMENT_INSTANCE).optionalFieldOf("enchantments", List.of())
             .forGetter(trade -> trade.enchantments),
-        Codec.list(CustomCodecs.MOD_EFFECT_INSTANCE).optionalFieldOf("potion_effects", List.of())
+        Codec.list(MobEffectInstance.CODEC).optionalFieldOf("potion_effects", List.of())
             .forGetter(trade -> trade.mobEffects)
         ).apply(builder, BasicTrade::new)
     );
 
     private final ItemStack offerStack;
-    private final ItemStack paymentStack;
-    private final ItemStack secondaryPaymentStack;
+    private final ItemStack primaryPayment;
+    private final ItemStack secondaryPayment;
     private final float priceMultiplier;
     private final int maxTrades;
     private final int experience;
     private final List<EnchantmentInstance> enchantments;
     private final List<MobEffectInstance> mobEffects;
 
-    public BasicTrade(ItemStack offerStack, ItemStack paymentStack, ItemStack secondaryPaymentStack, float priceMultiplier, int maxTrades, int experience, List<EnchantmentInstance> enchantments, List<MobEffectInstance> mobEffects)
+    public BasicTrade(ItemStack offerStack, ItemStack primaryPayment, ItemStack secondaryPayment, float priceMultiplier, int maxTrades, int experience, List<EnchantmentInstance> enchantments, List<MobEffectInstance> mobEffects)
     {
         this.offerStack = offerStack;
-        this.paymentStack = paymentStack;
-        this.secondaryPaymentStack = secondaryPaymentStack;
+        this.primaryPayment = primaryPayment;
+        this.secondaryPayment = secondaryPayment;
         this.priceMultiplier = priceMultiplier;
         this.maxTrades = maxTrades;
         this.experience = experience;
@@ -79,9 +77,17 @@ public class BasicTrade implements ITradeType
         ItemStack offerStack = this.offerStack.copy();
         if(!this.enchantments.isEmpty())
         {
-            if(offerStack.getItem() == Items.ENCHANTED_BOOK)
+            for(EnchantmentInstance data : this.enchantments)
             {
-                EnchantmentHelper.setEnchantments(this.enchantments.stream().collect(Collectors.toMap(o -> o.enchantment, e -> e.level)), offerStack);
+                offerStack.enchant(data.enchantment, data.level);
+            }
+
+            // TODO do we still need separate handling?
+            /*if(offerStack.getItem() == Items.ENCHANTED_BOOK)
+            {
+                ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(offerStack));
+                this.enchantments.forEach(instance -> enchants.set(instance.enchantment, instance.level));
+                offerStack.set(DataComponents.ENCHANTMENTS, enchants.toImmutable());
             }
             else
             {
@@ -89,13 +95,22 @@ public class BasicTrade implements ITradeType
                 {
                     offerStack.enchant(data.enchantment, data.level);
                 }
-            }
+            }*/
         }
         if(!this.mobEffects.isEmpty())
         {
-            PotionUtils.setCustomEffects(offerStack, this.mobEffects);
+            // TODO add back this
+            //PotionUtils.setCustomEffects(offerStack, this.mobEffects);
         }
-        return new GoblinTrade(offerStack, this.paymentStack.copy(), this.secondaryPaymentStack.copy(), this.maxTrades, this.experience, this.priceMultiplier);
+
+        ItemCost primaryCost = this.fromStack(this.primaryPayment);
+        Optional<ItemCost> secondaryCost = this.secondaryPayment.isEmpty() ? Optional.empty() : Optional.of(this.fromStack(this.secondaryPayment));
+        return new GoblinTrade(offerStack, primaryCost, secondaryCost, this.maxTrades, this.experience, this.priceMultiplier);
+    }
+
+    private ItemCost fromStack(ItemStack stack)
+    {
+        return new ItemCost(stack.getItemHolder(), stack.getCount(), DataComponentPredicate.allOf(stack.getComponents()));
     }
 
     public static class Builder
@@ -166,6 +181,12 @@ public class BasicTrade implements ITradeType
         public Builder addPotionEffect(MobEffectInstance effect)
         {
             this.modEffects.add(effect);
+            return this;
+        }
+
+        public <T> Builder addDataComponent(DataComponentType<? super T> type, T value)
+        {
+            this.offerStack.set(type, value);
             return this;
         }
     }

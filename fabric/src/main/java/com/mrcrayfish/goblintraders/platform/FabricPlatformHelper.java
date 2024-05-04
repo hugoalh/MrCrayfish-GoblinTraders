@@ -18,6 +18,6 @@ public class FabricPlatformHelper implements IPlatformHelper
     @Override
     public SpawnEggItem createSpawnEgg(Supplier<EntityType<? extends AbstractGoblinEntity>> type, int primaryColour, int secondaryColour, Item.Properties properties)
     {
-        return new GoblinSpawnEggItem(type, primaryColour, secondaryColour, properties);
+        return new SpawnEggItem(type.get(), primaryColour, secondaryColour, properties);
     }
 }

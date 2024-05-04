@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.trading.ItemCost;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,39 +27,41 @@ public class MerchantMenuMixin
     @Final
     private MerchantContainer tradeContainer;
 
-    @Inject(method = "moveFromInventoryToPaymentSlot", at = @At(value = "HEAD"), cancellable = true)
-    private void goblinTradersMoveFromInventoryToPaymentSlot(int tradeIndex, ItemStack payment, CallbackInfo ci)
+    @SuppressWarnings("DataFlowIssue")
+    //@Inject(method = "moveFromInventoryToPaymentSlot", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "moveFromInventoryToPaymentSlot", at = @At(value = "HEAD"))
+    private void goblinTradersMoveFromInventoryToPaymentSlot(int tradeIndex, ItemCost cost, CallbackInfo ci)
     {
         // We are providing custom handling for enchanted payments
-        if(!EnchantmentHelper.getEnchantments(payment).isEmpty())
+        /*if(!EnchantmentHelper.getEnchantments(cost).isEmpty())
         {
             ci.cancel();
             MerchantMenu menu = (MerchantMenu) (Object) this;
             for(int i = 3; i < menu.slots.size(); i++)
             {
                 ItemStack slotStack = menu.slots.get(i).getItem();
-                if(slotStack.isEmpty() || !goblinTraders$isMatching(payment, slotStack))
+                if(slotStack.isEmpty() || !goblinTraders$isMatching(cost, slotStack))
                     continue;
                 ItemStack stack = this.tradeContainer.getItem(tradeIndex);
                 int count = stack.isEmpty() ? 0 : stack.getCount();
-                int addCount = Math.min(payment.getMaxStackSize() - count, slotStack.getCount());
+                int addCount = Math.min(cost.getMaxStackSize() - count, slotStack.getCount());
                 ItemStack copy = slotStack.copy();
                 int newCount = count + addCount;
                 slotStack.shrink(addCount);
                 copy.setCount(newCount);
                 this.tradeContainer.setItem(tradeIndex, copy);
-                if(newCount >= payment.getMaxStackSize())
+                if(newCount >= cost.getMaxStackSize())
                 {
                     break;
                 }
             }
-        }
+        }*/
     }
 
     @Unique
     private static boolean goblinTraders$isMatching(ItemStack a, ItemStack b)
     {
-        if(a.getItem() == Items.ENCHANTED_BOOK && b.getItem() == Items.ENCHANTED_BOOK)
+        /*if(a.getItem() == Items.ENCHANTED_BOOK && b.getItem() == Items.ENCHANTED_BOOK)
         {
             Map<Enchantment, Integer> givenEnchantments = EnchantmentHelper.getEnchantments(b);
             Map<Enchantment, Integer> paymentEnchantments = EnchantmentHelper.getEnchantments(a);
@@ -70,6 +73,7 @@ public class MerchantMenuMixin
                 return true;
             }
         }
-        return ItemStack.isSameItemSameTags(a, b);
+        return ItemStack.isSameItemSameTags(a, b);*/
+        return true;
     }
 }

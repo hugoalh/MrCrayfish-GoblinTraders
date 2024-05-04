@@ -1,6 +1,5 @@
 package com.mrcrayfish.goblintraders.trades.type;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import net.minecraft.resources.ResourceLocation;

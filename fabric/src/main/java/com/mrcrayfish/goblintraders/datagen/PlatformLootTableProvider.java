@@ -3,10 +3,14 @@ package com.mrcrayfish.goblintraders.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 /**
@@ -21,13 +25,13 @@ public class PlatformLootTableProvider
 
     public static class Entity extends SimpleFabricLootTableProvider
     {
-        public Entity(FabricDataOutput output)
+        public Entity(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture)
         {
-            super(output, LootContextParamSets.ENTITY);
+            super(output, registriesFuture, LootContextParamSets.ENTITY);
         }
 
         @Override
-        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer)
+        public void generate(HolderLookup.Provider provider, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer)
         {
             GoblinLootTableProvider.accept(new PlatformLootBuilder.Entity(consumer));
         }

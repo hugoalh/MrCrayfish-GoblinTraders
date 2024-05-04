@@ -32,17 +32,13 @@
         "fabricloader": ">=${fabric_loader_version}",
         "fabric": "*",
         "minecraft": "${minecraft_version}",
-        "java": ">=17",
+        "java": ">=21",
         "framework": ">=${framework_version}"
     },
     "recommends ": {
         "catalogue": ">=${catalogue_version}"
     },
     "custom": {
-        "configured": {
-            "configs": [],
-            "background": "minecraft:textures/block/stone.png"
-        },
         "catalogue": {
             "banner": "assets/${mod_id}/banner.png",
             "background": "assets/${mod_id}/background.png"

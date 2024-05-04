@@ -1,5 +1,6 @@
 package com.mrcrayfish.goblintraders.datagen;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -13,9 +14,9 @@ public class PlatformLootBuilder
 {
     public static class Entity implements LootBuilder.Entity
     {
-        private final BiConsumer<ResourceLocation, LootTable.Builder> consumer;
+        private final BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer;
 
-        public Entity(BiConsumer<ResourceLocation, LootTable.Builder> consumer)
+        public Entity(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer)
         {
             this.consumer = consumer;
         }
@@ -23,7 +24,8 @@ public class PlatformLootBuilder
         @Override
         public void add(EntityType<?> type, LootTable.Builder builder)
         {
-            this.consumer.accept(EntityType.getKey(type), builder);
+            // TODO is this right?
+            this.consumer.accept(type.getDefaultLootTable(), builder);
         }
     }
 }

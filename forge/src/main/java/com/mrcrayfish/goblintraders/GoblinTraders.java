@@ -51,7 +51,7 @@ public class GoblinTraders
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        generator.addProvider(event.includeServer(), new PlatformLootTableProvider(output));
+        generator.addProvider(event.includeServer(), new PlatformLootTableProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new GoblinTradeProvider(output, lookupProvider));
     }
 

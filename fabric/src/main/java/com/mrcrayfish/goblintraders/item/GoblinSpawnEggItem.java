@@ -1,11 +1,14 @@
 package com.mrcrayfish.goblintraders.item;
 
+import com.mojang.serialization.MapCodec;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.component.CustomData;
 
 import java.util.function.Supplier;
 
@@ -14,6 +17,7 @@ import java.util.function.Supplier;
  */
 public class GoblinSpawnEggItem extends SpawnEggItem
 {
+    private static final MapCodec<EntityType<?>> ENTITY_TYPE_FIELD_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("id");
     private final Supplier<EntityType<? extends AbstractGoblinEntity>> type;
 
     @SuppressWarnings("DataFlowIssue")
@@ -24,9 +28,10 @@ public class GoblinSpawnEggItem extends SpawnEggItem
     }
 
     @Override
-    public EntityType<?> getType(@Nullable CompoundTag tag)
+    public EntityType<?> getType(ItemStack stack)
     {
-        return this.type.get();
+        CustomData data = stack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY);
+        return !data.isEmpty() ? data.read(ENTITY_TYPE_FIELD_CODEC).result().orElse(this.type.get()) : this.type.get();
     }
 
     @Override

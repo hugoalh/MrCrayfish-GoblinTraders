@@ -4,16 +4,19 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
+
+import java.util.Optional;
 
 /**
  * Author: MrCrayfish
  */
-public record GoblinTrade(ItemStack offerStack, ItemStack paymentStack, ItemStack secondaryPaymentStack, int maxUses, int experience, float priceMultiplier) implements VillagerTrades.ItemListing
+public record GoblinTrade(ItemStack offerStack, ItemCost primaryCost, Optional<ItemCost> secondaryCost, int maxUses, int experience, float priceMultiplier) implements VillagerTrades.ItemListing
 {
     @Override
     public MerchantOffer getOffer(Entity trader, RandomSource rand)
     {
-        return new GoblinMerchantOffer(this.paymentStack, this.secondaryPaymentStack, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
+        return new GoblinMerchantOffer(trader, this.primaryCost, this.secondaryCost, this.offerStack, this.maxUses, this.experience, this.priceMultiplier);
     }
 }

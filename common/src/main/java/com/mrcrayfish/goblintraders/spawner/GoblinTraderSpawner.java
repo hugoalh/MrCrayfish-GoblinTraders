@@ -2,6 +2,7 @@ package com.mrcrayfish.goblintraders.spawner;
 
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -116,7 +117,7 @@ public class GoblinTraderSpawner extends SavedData
             int posY = center.getY() + this.createRandomSpawnableDistance(range);
             int posZ = center.getZ() + this.createRandomSpawnableDistance(range);
             BlockPos pos = this.findGround(new BlockPos(posX, posY, posZ));
-            if(pos != null && !pos.closerThan(center, MIN_SPAWN_DISTANCE) && NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, this.level, pos, this.type))
+            if(pos != null && !pos.closerThan(center, MIN_SPAWN_DISTANCE) && SpawnPlacements.isSpawnPositionOk(this.type, this.level, pos))
             {
                 return pos;
             }
@@ -196,7 +197,7 @@ public class GoblinTraderSpawner extends SavedData
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag)
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider)
     {
         tag.putInt("RunDelay", this.runDelay);
         tag.putInt("SpawnChance", this.spawnChance);
@@ -220,7 +221,7 @@ public class GoblinTraderSpawner extends SavedData
 
     private static SavedData.Factory<GoblinTraderSpawner> dataFactory(ServerLevel level, EntityType<? extends AbstractGoblinEntity> type, SpawnData data)
     {
-        return new SavedData.Factory<>(() -> GoblinTraderSpawner.createSpawner(level, type, data), tag -> {
+        return new SavedData.Factory<>(() -> GoblinTraderSpawner.createSpawner(level, type, data), (tag, provider) -> {
             return GoblinTraderSpawner.createSpawner(level, type, data).load(tag);
         }, DataFixTypes.SAVED_DATA_FORCED_CHUNKS);
     }

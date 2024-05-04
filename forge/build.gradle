@@ -5,7 +5,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
 
@@ -20,7 +20,7 @@ mixin {
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
-
+    reobf = false
     copyIdeResources = true
 
     if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
@@ -28,49 +28,30 @@ minecraft {
     }
 
     runs {
+        configureEach {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                goblintraders {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
+        }
         client {
             workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Client'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modClientRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
         }
-
         server {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Server'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modServerRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
+            args '--nogui'
         }
-
         data {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             taskName 'Data'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modDataRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
         }
     }
 }
@@ -83,11 +64,14 @@ configurations {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("com.mrcrayfish:framework-forge:${minecraft_version}-${framework_version}")
-    runtimeOnly fg.deobf("com.mrcrayfish:catalogue-forge:${minecraft_version}-${catalogue_version}")
+    implementation "com.mrcrayfish:framework-forge:${minecraft_version}-${framework_version}"
+    runtimeOnly "com.mrcrayfish:catalogue-forge:${minecraft_version}-${catalogue_version}"
     compileOnly project(":common")
     testCompileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+
+    // Temp hack fix in Forge.
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 Spec<Task> notForge = { Task it -> !it.name.startsWith("forge") && !it.name.contains("Test") } as Spec<Task>
