@@ -92,8 +92,6 @@ processResources {
     from project(":common").sourceSets.main.resources
 }
 
-jar.finalizedBy('reobfJar')
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -158,7 +156,6 @@ tasks.register('signJar', SignJar) {
 }
 
 jar.finalizedBy 'signJar'
-signJar.mustRunAfter 'reobfJar'
 
 sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
