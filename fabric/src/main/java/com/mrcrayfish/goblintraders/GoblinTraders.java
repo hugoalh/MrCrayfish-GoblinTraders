@@ -5,6 +5,7 @@ import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.core.ModItems;
 import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
 import com.mrcrayfish.goblintraders.datagen.PlatformLootTableProvider;
+import com.mrcrayfish.goblintraders.enchantment.IAncientEnchantment;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.mixin.SpawnEggItemMixin;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
@@ -12,9 +13,12 @@ import com.mrcrayfish.goblintraders.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -52,6 +56,15 @@ public class GoblinTraders implements ModInitializer, DataGeneratorEntrypoint
         FabricDefaultAttributeRegistry.register(ModEntities.VEIN_GOBLIN_TRADER.get(), AbstractGoblinEntity.createAttributes());
         SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.GOBLIN_TRADER.get(), ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
         SpawnEggItemMixin.goblinTradersGetEggMap().putIfAbsent(ModEntities.VEIN_GOBLIN_TRADER.get(), ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
+
+        EnchantmentEvents.ALLOW_ENCHANTING.register((enchantment, target, context) -> {
+            if(enchantment instanceof IAncientEnchantment) {
+                if(Config.SERVER.ancientEnchantments.goblinsOnly.get()) {
+                    return TriState.FALSE;
+                }
+            }
+            return TriState.DEFAULT;
+        });
     }
 
     @Override

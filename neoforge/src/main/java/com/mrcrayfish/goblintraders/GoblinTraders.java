@@ -1,20 +1,26 @@
 package com.mrcrayfish.goblintraders;
 
 import com.mrcrayfish.goblintraders.client.ClientBootstrap;
+import com.mrcrayfish.goblintraders.core.ModEnchantments;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
+import com.mrcrayfish.goblintraders.enchantment.IAncientEnchantment;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.datagen.PlatformLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AnvilUpdateEvent;
+import net.neoforged.neoforge.event.enchanting.GetEnchantmentLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -32,6 +38,8 @@ public class GoblinTraders
         bus.addListener(this::onGatherData);
         bus.addListener(this::onEntityAttributeCreation);
         NeoForge.EVENT_BUS.addListener(this::addReloadListener);
+        NeoForge.EVENT_BUS.addListener(this::onAnvilUpdate);
+        //NeoForge.EVENT_BUS.addListener(this::onGetEnchantLevel);
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event)
@@ -62,5 +70,18 @@ public class GoblinTraders
     public void addReloadListener(AddReloadListenerEvent event)
     {
         event.addListener(TradeManager.instance());
+    }
+
+    public void onAnvilUpdate(AnvilUpdateEvent event)
+    {
+        // Disable ancient enchantments on anvil
+        if(event.getRight().getEnchantments().entrySet().stream().anyMatch(entry -> {
+            if(entry.getKey().value() instanceof IAncientEnchantment) {
+                return Config.SERVER.ancientEnchantments.goblinsOnly.get();
+            }
+            return false;
+        })) {
+            event.setCanceled(true);
+        };
     }
 }

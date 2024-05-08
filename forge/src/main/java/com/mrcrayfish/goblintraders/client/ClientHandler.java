@@ -6,6 +6,9 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinTraderRenderer;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.core.ModItems;
+import com.mrcrayfish.goblintraders.core.ModMenuTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -22,6 +25,7 @@ public class ClientHandler
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
+        MenuScreens.register(ModMenuTypes.GOBLIN_MERCHANT.get(), MerchantScreen::new);
         event.registerEntityRenderer(ModEntities.GOBLIN_TRADER.get(), GoblinTraderRenderer::new);
         event.registerEntityRenderer(ModEntities.VEIN_GOBLIN_TRADER.get(), GoblinTraderRenderer::new);
     }

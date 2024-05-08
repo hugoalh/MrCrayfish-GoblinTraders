@@ -1,21 +1,32 @@
 package com.mrcrayfish.goblintraders.datagen;
 
+import com.mrcrayfish.goblintraders.core.ModEnchantments;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
+import com.mrcrayfish.goblintraders.trades.type.BasicTrade.Builder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * Author: MrCrayfish
@@ -42,49 +53,49 @@ public class GoblinTradeProvider extends TradeProvider
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD))
-                .setPaymentStack(new ItemStack(Items.APPLE, 8))
+                .setPaymentStack(new ItemCost(Items.APPLE, 8))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(24)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.IRON_INGOT, 2))
-                .setPaymentStack(new ItemStack(Items.RAW_IRON))
+                .setPaymentStack(new ItemCost(Items.RAW_IRON))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(30)
                 .setExperience(6)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.GOLD_INGOT, 3))
-                .setPaymentStack(new ItemStack(Items.RAW_GOLD, 2))
+                .setPaymentStack(new ItemCost(Items.RAW_GOLD, 2))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(30)
                 .setExperience(6)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.COPPER_INGOT, 2))
-                .setPaymentStack(new ItemStack(Items.RAW_COPPER, 1))
+                .setPaymentStack(new ItemCost(Items.RAW_COPPER, 1))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(30)
                 .setExperience(6)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.COAL))
-                .setPaymentStack(new ItemStack(Items.ROTTEN_FLESH, 4))
+                .setPaymentStack(new ItemCost(Items.ROTTEN_FLESH, 4))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(24)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.FLINT, 2))
-                .setPaymentStack(new ItemStack(Items.GRAVEL))
+                .setPaymentStack(new ItemCost(Items.GRAVEL))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(32)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD))
-                .setPaymentStack(new ItemStack(Items.COBBLESTONE, 32))
+                .setPaymentStack(new ItemCost(Items.COBBLESTONE, 32))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(128)
                 .setExperience(4)
@@ -96,64 +107,64 @@ public class GoblinTradeProvider extends TradeProvider
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.GUNPOWDER, 2))
-                .setPaymentStack(new ItemStack(Items.EMERALD))
+                .setPaymentStack(new ItemCost(Items.EMERALD))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(32)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD, 6))
-                .setPaymentStack(new ItemStack(Items.TURTLE_EGG))
+                .setPaymentStack(new ItemCost(Items.TURTLE_EGG))
                 .setPriceMultiplier(0F)
                 .setExperience(10)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD, 8))
-                .setPaymentStack(new ItemStack(Items.PUFFERFISH_BUCKET))
+                .setPaymentStack(new ItemCost(Items.PUFFERFISH_BUCKET))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(4)
                 .setExperience(10)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.SPONGE))
-                .setPaymentStack(new ItemStack(Items.EMERALD, 8))
+                .setPaymentStack(new ItemCost(Items.EMERALD, 8))
                 .setPriceMultiplier(0F)
                 .setExperience(10)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.CHIPPED_ANVIL))
-                .setPaymentStack(new ItemStack(Items.DAMAGED_ANVIL))
-                .setSecondaryPaymentStack(new ItemStack(Items.IRON_INGOT, 4))
+                .setOfferStack(new ItemStack(Items.ANVIL))
+                .setPaymentStack(new ItemCost(Items.DAMAGED_ANVIL))
+                .setSecondaryPaymentStack(new ItemCost(Items.IRON_INGOT, 2))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(2)
                 .setExperience(10)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.ANVIL))
-                .setPaymentStack(new ItemStack(Items.CHIPPED_ANVIL))
-                .setSecondaryPaymentStack(new ItemStack(Items.IRON_INGOT, 4))
+                .setPaymentStack(new ItemCost(Items.CHIPPED_ANVIL))
+                .setSecondaryPaymentStack(new ItemCost(Items.IRON_INGOT, 1))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(2)
                 .setExperience(10)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.TERRACOTTA, 2))
-                .setPaymentStack(new ItemStack(Items.CLAY))
+                .setPaymentStack(new ItemCost(Items.CLAY))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(64)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.BOOK, 2))
-                .setPaymentStack(new ItemStack(Items.LEATHER))
-                .setSecondaryPaymentStack(new ItemStack(Items.PAPER, 3))
+                .setPaymentStack(new ItemCost(Items.LEATHER))
+                .setSecondaryPaymentStack(new ItemCost(Items.PAPER, 3))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(32)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD))
-                .setPaymentStack(new ItemStack(Items.AMETHYST_SHARD, 2))
+                .setPaymentStack(new ItemCost(Items.AMETHYST_SHARD, 2))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(20)
                 .setExperience(4)
@@ -164,143 +175,237 @@ public class GoblinTradeProvider extends TradeProvider
          * ************************************************************************************** */
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.EXPERIENCE_BOTTLE))
-                .setPaymentStack(new ItemStack(Items.EMERALD, 3))
-                .setPriceMultiplier(0F)
-                .setMaxTrades(64)
-                .setExperience(10)
-                .build());
+            .setOfferStack(new ItemStack(Items.EXPERIENCE_BOTTLE))
+            .setPaymentStack(new ItemCost(Items.EMERALD, 3))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(64)
+            .setExperience(10)
+            .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.NAME_TAG))
-                .setPaymentStack(new ItemStack(Items.EMERALD, 24))
-                .setSecondaryPaymentStack(new ItemStack(Items.PAPER, 8))
-                .setPriceMultiplier(0F)
-                .setMaxTrades(2)
-                .setExperience(10)
-                .build());
+            .setOfferStack(new ItemStack(Items.NAME_TAG))
+            .setPaymentStack(new ItemCost(Items.EMERALD, 16))
+            .setSecondaryPaymentStack(new ItemCost(Items.PAPER, 8))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(2)
+            .setExperience(10)
+            .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.BLUE_ICE))
-                .setPaymentStack(new ItemStack(Items.PACKED_ICE, 4))
-                .setPriceMultiplier(0F)
-                .setMaxTrades(64)
-                .setExperience(10)
-                .build());
+            .setOfferStack(new ItemStack(Items.BLUE_ICE))
+            .setPaymentStack(new ItemCost(Items.PACKED_ICE, 4))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(64)
+            .setExperience(10)
+            .build());
 
-        ItemStack luckOfTheSeaBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(Enchantments.LUCK_OF_THE_SEA, 3));
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.FISHING_ROD))
-                .setPaymentStack(new ItemStack(Items.FISHING_ROD))
-                .setSecondaryPaymentStack(luckOfTheSeaBook)
-                .setPriceMultiplier(0.5F)
-                .setMaxTrades(2)
-                .setExperience(30)
-                .addEnchantment(new EnchantmentInstance(Enchantments.LUCK_OF_THE_SEA, 5))
-                .build());
+            .setOfferStack(createEnchantedItem(Items.FISHING_ROD, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_LUCK_OF_THE_SEA.get(), 1);
+            }))
+            .setPaymentStack(new ItemCost(Items.FISHING_ROD))
+            .setSecondaryPaymentStack(createEnchantedBookCost(mutable -> {
+                mutable.set(Enchantments.LUCK_OF_THE_SEA, 3);
+            }))
+            .setPriceMultiplier(0.5F)
+            .setMaxTrades(2)
+            .setExperience(30)
+            .build());
 
-        ItemStack lureBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(Enchantments.LURE, 3));
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.FISHING_ROD))
-                .setPaymentStack(new ItemStack(Items.FISHING_ROD))
-                .setSecondaryPaymentStack(lureBook)
-                .setPriceMultiplier(0.5F)
-                .setMaxTrades(2)
-                .setExperience(30)
-                .addEnchantment(new EnchantmentInstance(Enchantments.LURE, 5))
-                .build());
+            .setOfferStack(createEnchantedItem(Items.FISHING_ROD, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_LURE.get(), 1);
+            }))
+            .setPaymentStack(new ItemCost(Items.FISHING_ROD))
+            .setSecondaryPaymentStack(createEnchantedBookCost(mutable -> {
+                mutable.set(Enchantments.LURE, 3);
+            }))
+            .setPriceMultiplier(0.5F)
+            .setMaxTrades(2)
+            .setExperience(30)
+            .build());
 
-        Item[] creeperMusicDiscs = new Item[]{
+        Item[] musicDiscs = new Item[]{
+            Items.MUSIC_DISC_11,
             Items.MUSIC_DISC_13,
             Items.MUSIC_DISC_CAT,
             Items.MUSIC_DISC_BLOCKS,
             Items.MUSIC_DISC_FAR,
             Items.MUSIC_DISC_MALL,
+            Items.MUSIC_DISC_MELLOHI,
             Items.MUSIC_DISC_STAL,
             Items.MUSIC_DISC_STRAD,
             Items.MUSIC_DISC_WARD,
-            Items.MUSIC_DISC_WAIT
+            Items.MUSIC_DISC_WAIT,
+            Items.MUSIC_DISC_OTHERSIDE,
+            Items.MUSIC_DISC_RELIC
         };
-        for(Item disc : creeperMusicDiscs)
+        for(Item disc : musicDiscs)
         {
-            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(disc, 1)).setPaymentStack(new ItemStack(Items.EMERALD, 32)).setPriceMultiplier(0F).setMaxTrades(1).setExperience(100).build());
+            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+                .setOfferStack(new ItemStack(disc, 1))
+                .setPaymentStack(new ItemCost(Items.EMERALD, 32))
+                .setPriceMultiplier(0F)
+                .setMaxTrades(1)
+                .setExperience(100)
+                .build());
         }
 
-        EnchantmentInstance[] pickaxeEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.EFFICIENCY, 5), new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.FORTUNE, 3)};
-        for(EnchantmentInstance pickaxeEnchant : pickaxeEnchantments)
+        Item[] armorTrims = new Item[]{
+            Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE
+        };
+        for(Item item : armorTrims)
         {
-            ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(pickaxeEnchant.enchantment, pickaxeEnchant.level));
-            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(Items.DIAMOND_PICKAXE)).setPaymentStack(new ItemStack(Items.DIAMOND_PICKAXE)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(pickaxeEnchant.enchantment, pickaxeEnchant.level + 1)).build());
-        }
-
-        EnchantmentInstance[] axeEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.EFFICIENCY, 5), new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.SHARPNESS, 5)};
-        for(EnchantmentInstance axeEnchant : axeEnchantments)
-        {
-            ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(axeEnchant.enchantment, axeEnchant.level));
-            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(Items.DIAMOND_AXE)).setPaymentStack(new ItemStack(Items.DIAMOND_AXE)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(axeEnchant.enchantment, axeEnchant.level + 1)).build());
-        }
-
-        EnchantmentInstance[] shovelEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.EFFICIENCY, 5), new EnchantmentInstance(Enchantments.UNBREAKING, 3)};
-        for(EnchantmentInstance shovelEnchant : shovelEnchantments)
-        {
-            ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(shovelEnchant.enchantment, shovelEnchant.level));
-            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(Items.DIAMOND_SHOVEL)).setPaymentStack(new ItemStack(Items.DIAMOND_SHOVEL)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(shovelEnchant.enchantment, shovelEnchant.level + 1)).build());
-        }
-
-        EnchantmentInstance[] hoeEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.FORTUNE, 3)};
-        for(EnchantmentInstance hoeEnchantment : hoeEnchantments)
-        {
-            ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(hoeEnchantment.enchantment, hoeEnchantment.level));
-            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(Items.DIAMOND_HOE)).setPaymentStack(new ItemStack(Items.DIAMOND_HOE)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(hoeEnchantment.enchantment, hoeEnchantment.level + 1)).build());
+            this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+                .setOfferStack(new ItemStack(item))
+                .setPaymentStack(new ItemCost(Items.EMERALD, 32))
+                .setPriceMultiplier(0F)
+                .setMaxTrades(1)
+                .setExperience(100)
+                .build());
         }
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_PICKAXE))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_PICKAXE))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_PICKAXE, 1, mutable -> {
+                mutable.set(Enchantments.EFFICIENCY, 5);
+                mutable.set(Enchantments.FORTUNE, 3);
+            }), Component.translatable("custom.goblintraders.goblin_pickaxe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_PICKAXE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
             .setExperience(1000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.EFFICIENCY, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.FORTUNE, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.MENDING, 1))
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_AXE))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_AXE))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_AXE, 1, mutable -> {
+                mutable.set(Enchantments.EFFICIENCY, 5);
+                mutable.set(Enchantments.SHARPNESS, 5);
+            }), Component.translatable("custom.goblintraders.goblin_axe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_AXE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
             .setExperience(1000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.SHARPNESS, 6))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.MENDING, 1))
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_SHOVEL))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_SHOVEL))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_SHOVEL, 1, mutable -> {
+                mutable.set(Enchantments.EFFICIENCY, 5);
+                mutable.set(Enchantments.SILK_TOUCH, 1);
+            }), Component.translatable("custom.goblintraders.goblin_shovel").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_SHOVEL))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
             .setExperience(1000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.EFFICIENCY, 6))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.MENDING, 1))
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_HOE))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_HOE))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_HOE, 1, mutable -> {
+                mutable.set(Enchantments.FORTUNE, 3);
+            }), Component.translatable("custom.goblintraders.goblin_hoe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_HOE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
             .setExperience(1000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.FORTUNE, 6))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.MENDING, 1))
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_SWORD, 1, mutable -> {
+                mutable.set(Enchantments.SHARPNESS, 5);
+                mutable.set(Enchantments.SMITE, 5);
+                mutable.set(Enchantments.BANE_OF_ARTHROPODS, 5);
+                mutable.set(Enchantments.SWEEPING_EDGE, 3);
+                mutable.set(Enchantments.KNOCKBACK, 3);
+                mutable.set(Enchantments.LOOTING, 3);
+            }), Component.translatable("custom.goblintraders.goblin_sword").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_SWORD))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
+                mutable.set(Enchantments.POWER, 5);
+                mutable.set(Enchantments.PUNCH, 2);
+                mutable.set(Enchantments.FLAME, 1);
+                mutable.set(Enchantments.INFINITY, 3);
+            }), Component.translatable("custom.goblintraders.goblin_bow").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.BOW))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_HELMET, 1, mutable -> {
+                mutable.set(Enchantments.PROTECTION, 4);
+                mutable.set(Enchantments.THORNS, 3);
+                mutable.set(Enchantments.RESPIRATION, 3);
+                mutable.set(Enchantments.AQUA_AFFINITY, 1);
+            }), Component.translatable("custom.goblintraders.goblin_helmet").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_HELMET))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_CHESTPLATE, 1, mutable -> {
+                mutable.set(Enchantments.PROTECTION, 4);
+                mutable.set(Enchantments.PROJECTILE_PROTECTION, 3);
+                mutable.set(Enchantments.BLAST_PROTECTION, 3);
+                mutable.set(Enchantments.FIRE_PROTECTION, 3);
+                mutable.set(Enchantments.THORNS, 3);
+            }), Component.translatable("custom.goblintraders.goblin_chestplate").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_CHESTPLATE))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_LEGGINGS, 1, mutable -> {
+                mutable.set(Enchantments.PROTECTION, 4);
+                mutable.set(Enchantments.PROJECTILE_PROTECTION, 3);
+                mutable.set(Enchantments.BLAST_PROTECTION, 3);
+                mutable.set(Enchantments.FIRE_PROTECTION, 3);
+                mutable.set(Enchantments.SWIFT_SNEAK, 3);
+                mutable.set(Enchantments.THORNS, 3);
+            }), Component.translatable("custom.goblintraders.goblin_leggings").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_LEGGINGS))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_BOOTS, 1, mutable -> {
+                mutable.set(Enchantments.PROTECTION, 4);
+                mutable.set(Enchantments.FEATHER_FALLING, 4);
+                mutable.set(Enchantments.DEPTH_STRIDER, 3);
+                mutable.set(Enchantments.SOUL_SPEED, 3);
+                mutable.set(Enchantments.THORNS, 3);
+            }), Component.translatable("custom.goblintraders.goblin_boots").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_BOOTS))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
             .build());
     }
 
@@ -312,28 +417,28 @@ public class GoblinTradeProvider extends TradeProvider
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD))
-                .setPaymentStack(new ItemStack(Items.CARROT))
+                .setPaymentStack(new ItemCost(Items.CARROT, 8))
                 .setPriceMultiplier(0F)
-                .setMaxTrades(24)
+                .setMaxTrades(16)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.GLOWSTONE_DUST, 4))
-                .setPaymentStack(new ItemStack(Items.GLOWSTONE))
+                .setPaymentStack(new ItemCost(Items.GLOWSTONE))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(32)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.EMERALD, 1))
-                .setPaymentStack(new ItemStack(Items.NETHERRACK, 64))
+                .setPaymentStack(new ItemCost(Items.NETHERRACK, 64))
                 .setPriceMultiplier(0F)
                 .setMaxTrades(64)
                 .setExperience(4)
                 .build());
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.COMMON, BasicTrade.Builder.create()
                 .setOfferStack(new ItemStack(Items.NETHER_WART, 2))
-                .setPaymentStack(new ItemStack(Items.EMERALD))
+                .setPaymentStack(new ItemCost(Items.EMERALD))
                 .setPriceMultiplier(0F)
                 .setExperience(4)
                 .build());
@@ -343,47 +448,81 @@ public class GoblinTradeProvider extends TradeProvider
          * ************************************************************************************** */
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.TOTEM_OF_UNDYING))
-                .setPaymentStack(new ItemStack(Items.NETHERITE_INGOT, 2))
-                .setPriceMultiplier(0F)
-                .setExperience(10)
-                .build());
+            .setOfferStack(new ItemStack(Items.TOTEM_OF_UNDYING))
+            .setPaymentStack(new ItemCost(Items.NETHERITE_INGOT, 2))
+            .setPriceMultiplier(0F)
+            .setExperience(10)
+            .build());
+
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.NETHERITE_SCRAP, 5))
-                .setPaymentStack(new ItemStack(Items.ANCIENT_DEBRIS, 4))
-                .setPriceMultiplier(0F)
-                .setMaxTrades(20)
-                .setExperience(50)
-                .build());
+            .setOfferStack(new ItemStack(Items.NETHERITE_SCRAP, 5))
+            .setPaymentStack(new ItemCost(Items.ANCIENT_DEBRIS, 4))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(20)
+            .setExperience(50)
+            .build());
+
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
-                .setOfferStack(new ItemStack(Items.RED_NETHER_BRICKS, 1))
-                .setPaymentStack(new ItemStack(Items.NETHER_WART))
-                .setSecondaryPaymentStack(new ItemStack(Items.NETHER_BRICK))
-                .setPriceMultiplier(0F)
-                .setMaxTrades(128)
-                .setExperience(4)
-                .build());
+            .setOfferStack(new ItemStack(Items.RED_NETHER_BRICKS, 1))
+            .setPaymentStack(new ItemCost(Items.NETHER_WART))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHER_BRICK))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(128)
+            .setExperience(4)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
+            .setOfferStack(new ItemStack(Items.EMERALD, 2))
+            .setPaymentStack(new ItemCost(Items.GOLDEN_CARROT))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(8)
+            .setExperience(4)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.UNCOMMON, BasicTrade.Builder.create()
+            .setOfferStack(new ItemStack(Items.EXPERIENCE_BOTTLE))
+            .setPaymentStack(new ItemCost(Items.NETHER_QUARTZ_ORE))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(32)
+            .setExperience(3)
+            .build());
 
         /* ************************************************************************************** *
          *                                      RARE                                              *
          * ************************************************************************************** */
 
-        EnchantmentInstance[] swordEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.SHARPNESS, 5), new EnchantmentInstance(Enchantments.LOOTING, 3), new EnchantmentInstance(Enchantments.SWEEPING_EDGE, 3), new EnchantmentInstance(Enchantments.FIRE_ASPECT, 2), new EnchantmentInstance(Enchantments.KNOCKBACK, 2), new EnchantmentInstance(Enchantments.BANE_OF_ARTHROPODS, 5), new EnchantmentInstance(Enchantments.SMITE, 5)};
-        for(EnchantmentInstance swordEnchant : swordEnchantments)
-        {
-            ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(swordEnchant.enchantment, swordEnchant.level));
-            this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(Items.DIAMOND_SWORD)).setPaymentStack(new ItemStack(Items.DIAMOND_SWORD)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(swordEnchant.enchantment, swordEnchant.level + 1)).build());
-        }
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+            .setOfferStack(new ItemStack(Items.WITHER_SKELETON_SKULL))
+            .setPaymentStack(new ItemCost(Items.GOLDEN_CARROT, 32))
+            .setExperience(200)
+            .build());
 
-        Item[] diamondArmorSet = new Item[] {Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS};
-        EnchantmentInstance[] armorEnchantments = new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.BLAST_PROTECTION, 4), new EnchantmentInstance(Enchantments.FIRE_PROTECTION, 4), new EnchantmentInstance(Enchantments.PROJECTILE_PROTECTION, 4), new EnchantmentInstance(Enchantments.PROTECTION, 4), new EnchantmentInstance(Enchantments.UNBREAKING, 3)};
-        for(Item piece : diamondArmorSet)
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+            .setOfferStack(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
+            .setPaymentStack(new ItemCost(Items.DIAMOND, 16))
+            .setMaxTrades(1)
+            .setExperience(100)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+            .setOfferStack(new ItemStack(Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE))
+            .setPaymentStack(new ItemCost(Items.EMERALD, 32))
+            .setMaxTrades(1)
+            .setExperience(100)
+            .build());
+
+        Item[] musicDiscs = new Item[]{
+            Items.MUSIC_DISC_PIGSTEP
+        };
+        for(Item disc : musicDiscs)
         {
-            for(EnchantmentInstance armorEnchant : armorEnchantments)
-            {
-                ItemStack enchantedBook = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(armorEnchant.enchantment, armorEnchant.level));
-                this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create().setOfferStack(new ItemStack(piece)).setPaymentStack(new ItemStack(piece)).setSecondaryPaymentStack(enchantedBook).setPriceMultiplier(0F).setMaxTrades(1).setExperience(200).addEnchantment(new EnchantmentInstance(armorEnchant.enchantment, armorEnchant.level + 1)).build());
-            }
+            this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
+                .setOfferStack(new ItemStack(disc, 1))
+                .setPaymentStack(new ItemCost(Items.EMERALD, 32))
+                .setPriceMultiplier(0F)
+                .setMaxTrades(1)
+                .setExperience(100)
+                .build());
         }
 
         /*Potion[] rarePotions = new Potion[] {
@@ -406,43 +545,13 @@ public class GoblinTradeProvider extends TradeProvider
             PotionUtils.setPotion(awkwardPotion, Potions.AWKWARD);
             this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
                     .setOfferStack(potionStack)
-                    .setPaymentStack(new ItemStack(Items.EMERALD, 15))
+                    .setPaymentStack(new ItemCost(Items.EMERALD, 15))
                     .setSecondaryPaymentStack(awkwardPotion)
                     .setPriceMultiplier(0.5F)
                     .setMaxTrades(8)
                     .setExperience(100)
                     .build());
         }*/
-
-        //TODO not sure if this will make it into the final version.
-        /*ImmutableMap<EntityType<?>, Item> spawnerMap = ImmutableMap.of(EntityType.ZOMBIE, Items.ZOMBIE_HEAD, EntityType.SKELETON, Items.SKELETON_SKULL, EntityType.CREEPER, Items.CREEPER_HEAD);
-        spawnerMap.forEach((entityType, item) ->
-        {
-            MobSpawnerTileEntity mobSpawner = new MobSpawnerTileEntity();
-            mobSpawner.getSpawnerBaseLogic().setEntityType(entityType);
-            CompoundNBT tileTag = mobSpawner.write(new CompoundNBT());
-            ResourceLocation id = Objects.requireNonNull(TileEntityType.getId(mobSpawner.getType()));
-            tileTag.putString("id", id.toString());
-            mobSpawner.getSpawnerBaseLogic().write(tileTag);
-            tileTag.putShort("MaxNearbyEntities", (short) 3);
-            tileTag.putShort("RequiredPlayerRange", (short) 32);
-            tileTag.putShort("SpawnCount", (short) 2);
-            ItemStack stack = new ItemStack(Items.SPAWNER);
-            stack.getOrCreateTag().put("BlockEntityTag", tileTag);
-            CompoundNBT display = new CompoundNBT();
-            ListNBT loreList = new ListNBT();
-            loreList.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(new TranslationTextComponent(String.format("mob_spawner.type.%s", entityType.getRegistryName().getPath())))));
-            display.put("Lore", loreList);
-            stack.getOrCreateTag().put("display", display);
-            this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.RARE, BasicTrade.Builder.create()
-                    .setOfferStack(stack)
-                    .setPaymentStack(new ItemStack(item))
-                    .setSecondaryPaymentStack(new ItemStack(Items.NETHER_STAR))
-                    .setPriceMultiplier(0.5F)
-                    .setMaxTrades(1)
-                    .setExperience(1000)
-                    .build());
-        });*/
 
         /* ************************************************************************************** *
          *                                      EPIC                                              *
@@ -464,7 +573,7 @@ public class GoblinTradeProvider extends TradeProvider
             PotionUtils.setPotion(awkwardPotion, Potions.AWKWARD);
             this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.EPIC, BasicTrade.Builder.create()
                     .setOfferStack(potionStack)
-                    .setPaymentStack(new ItemStack(Items.EMERALD, 25))
+                    .setPaymentStack(new ItemCost(Items.EMERALD, 25))
                     .setSecondaryPaymentStack(awkwardPotion)
                     .setPriceMultiplier(0.5F)
                     .setMaxTrades(4)
@@ -472,32 +581,11 @@ public class GoblinTradeProvider extends TradeProvider
                     .build());
         }*/
 
-        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_SWORD))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_SWORD))
-            .setPriceMultiplier(0F)
-            .setMaxTrades(1)
-            .setExperience(20000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.SHARPNESS, 7))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 7))
-            .build());
-
-        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.DIAMOND_SWORD))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.DIAMOND_SWORD))
-            .setPriceMultiplier(0F)
-            .setMaxTrades(1)
-            .setExperience(20000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.KNOCKBACK, 5))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 5))
-            .build());
-
-        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+        // TODO Wait for 1.21
+        /*this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
             .setOfferStack(new ItemStack(Items.MACE))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.MACE))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 5))
+            .setSecondaryPaymentStack(new ItemCost(Items.MACE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
             .setExperience(20000)
@@ -506,39 +594,183 @@ public class GoblinTradeProvider extends TradeProvider
             .addEnchantment(new EnchantmentInstance(Enchantments.WIND_BURST, 6))
             .addEnchantment(new EnchantmentInstance(Enchantments.SMITE, 6))
             .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 6))
+            .build());*/
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_PICKAXE, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_pickaxe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_PICKAXE))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(new ItemStack(Items.BOW))
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 5))
-            .setSecondaryPaymentStack(new ItemStack(Items.BOW))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_AXE, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_SHARPNESS.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_axe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_AXE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
-            .setExperience(20000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.POWER, 6))
-            .addEnchantment(new EnchantmentInstance(Enchantments.PUNCH, 6))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 6))
+            .setExperience(1000)
             .build());
 
-        ItemStack theChosenOne = new ItemStack(Items.NETHERITE_SWORD);
-        theChosenOne.set(DataComponents.ITEM_NAME, Component.literal("The Chosen One").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.BOLD));
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(theChosenOne)
-            .setPaymentStack(new ItemStack(Items.DRAGON_HEAD, 20))
-            .setSecondaryPaymentStack(new ItemStack(Items.DRAGON_EGG))
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_SHOVEL, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
+                mutable.set(Enchantments.SILK_TOUCH, 1);
+            }), Component.translatable("custom.goblintraders.ancient_shovel").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_SHOVEL))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
-            .setExperience(80000)
-            .addEnchantment(new EnchantmentInstance(Enchantments.SHARPNESS, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.FIRE_ASPECT, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.SMITE, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.BANE_OF_ARTHROPODS, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.KNOCKBACK, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.LOOTING, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.SWEEPING_EDGE, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.UNBREAKING, 8))
-            .addEnchantment(new EnchantmentInstance(Enchantments.MENDING, 1))
-            .addEnchantment(new EnchantmentInstance(Enchantments.VANISHING_CURSE, 1))
+            .setExperience(1000)
             .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_HOE, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_hoe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_HOE))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_SWORD, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_SHARPNESS.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_SMITE.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_BANE_OF_ARTHROPODS.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_SWEEPING_EDGE.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_KNOCKBACK.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_LOOTING.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_sword").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_SWORD))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_POWER.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_PUNCH.get(), 1);
+                mutable.set(Enchantments.FLAME, 1);
+                mutable.set(Enchantments.INFINITY, 1);
+            }), Component.translatable("custom.goblintraders.ancient_bow").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.BOW))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_HELMET, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_RESPIRATION.get(), 1);
+                mutable.set(Enchantments.AQUA_AFFINITY, 1);
+            }), Component.translatable("custom.goblintraders.ancient_helmet").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_HELMET))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_CHESTPLATE, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_PROJECTILE_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_BLAST_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_FIRE_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_chestplate").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_CHESTPLATE))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_LEGGINGS, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_PROJECTILE_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_BLAST_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_FIRE_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_SWIFT_SNEAK.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_leggings").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_LEGGINGS))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+
+        this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
+            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_BOOTS, 1, mutable -> {
+                mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_FEATHER_FALLING.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_DEPTH_STRIDER.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_SOUL_SPEED.get(), 1);
+                mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
+            }), Component.translatable("custom.goblintraders.ancient_boots").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_BOOTS))
+            .setPriceMultiplier(0F)
+            .setMaxTrades(1)
+            .setExperience(1000)
+            .build());
+    }
+
+    private static ItemStack unbreakable(ItemStack stack)
+    {
+        stack.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
+        return stack;
+    }
+
+    private static ItemStack nameItem(ItemStack stack, Component name)
+    {
+        stack.set(DataComponents.ITEM_NAME, name);
+        return stack;
+    }
+
+    private static ItemStack createEnchantedItem(ItemLike item, int count, Consumer<ItemEnchantments.Mutable> consumer)
+    {
+        ItemStack stack = new ItemStack(item, count);
+        EnchantmentHelper.setEnchantments(stack, createItemEnchantments(consumer));
+        return stack;
+    }
+
+    private static ItemCost createEnchantedBookCost(Consumer<ItemEnchantments.Mutable> consumer)
+    {
+        return new ItemCost(BuiltInRegistries.ITEM.wrapAsHolder(Items.ENCHANTED_BOOK), 1, createComponentPredicate(builder -> {
+            builder.expect(DataComponents.STORED_ENCHANTMENTS, createItemEnchantments(consumer));
+        }));
+    }
+
+    private static DataComponentPredicate createComponentPredicate(Consumer<DataComponentPredicate.Builder> consumer)
+    {
+        DataComponentPredicate.Builder builder = DataComponentPredicate.builder();
+        consumer.accept(builder);
+        return builder.build();
+    }
+
+    private static ItemEnchantments createItemEnchantments(Consumer<ItemEnchantments.Mutable> consumer)
+    {
+        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        consumer.accept(mutable);
+        return mutable.toImmutable();
     }
 }

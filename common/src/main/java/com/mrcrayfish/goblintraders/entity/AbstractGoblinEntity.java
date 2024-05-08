@@ -9,6 +9,7 @@ import com.mrcrayfish.goblintraders.entity.ai.goal.FirePanicGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.FollowPotentialCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.LookAtCustomerGoal;
 import com.mrcrayfish.goblintraders.entity.ai.goal.TradeWithPlayerGoal;
+import com.mrcrayfish.goblintraders.inventory.GoblinMerchantMenu;
 import com.mrcrayfish.goblintraders.trades.GoblinOffers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -16,6 +17,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,6 +28,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
@@ -61,6 +64,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.OptionalInt;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -181,7 +185,18 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             {
                 this.getOffers().forEach(MerchantOffer::resetUses);
                 this.restockDelay = 0;
+                this.resendOffers();
             }
+        }
+    }
+
+    private void resendOffers()
+    {
+        MerchantOffers offers = this.getOffers();
+        Player player = this.getTradingPlayer();
+        if(player != null && !offers.isEmpty())
+        {
+            player.sendMerchantOffers(player.containerMenu.containerId, offers, 0, 0, false, this.canRestock());
         }
     }
 
@@ -235,10 +250,29 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
     }
 
     @Override
-    public void overrideOffers(@Nullable MerchantOffers offers)
+    public void openTradingScreen(Player player, Component title, int level)
     {
-
+        OptionalInt id = player.openMenu(new SimpleMenuProvider((windowId, playerInventory, player1) -> {
+            return new GoblinMerchantMenu(windowId, playerInventory, this);
+        }, title));
+        if(id.isPresent())
+        {
+            MerchantOffers offers = this.getOffers();
+            if(!offers.isEmpty())
+            {
+                player.sendMerchantOffers(id.getAsInt(), offers, level, 0, false, this.canRestock());
+            }
+        }
     }
+
+    @Override
+    public boolean canRestock()
+    {
+        return true;
+    }
+
+    @Override
+    public void overrideOffers(@Nullable MerchantOffers offers) {}
 
     @Override
     public void notifyTrade(MerchantOffer offer)
@@ -423,7 +457,10 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
         if(!offers.isEmpty())
         {
             MerchantOffers.CODEC.encodeStart(NbtOps.INSTANCE, offers).result()
-                .ifPresent(tag -> compound.put("Offers", tag));
+                .ifPresent(tag -> {
+                    System.out.println(tag.getAsString());
+                    compound.put("Offers", tag);
+                });
         }
         compound.putInt("DespawnDelay", this.despawnDelay);
         compound.putInt("RestockDelay", this.restockDelay);

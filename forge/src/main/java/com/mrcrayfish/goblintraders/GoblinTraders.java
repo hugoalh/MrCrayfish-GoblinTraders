@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.client.ClientBootstrap;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.datagen.GoblinTradeProvider;
 import com.mrcrayfish.goblintraders.datagen.PlatformLootTableProvider;
+import com.mrcrayfish.goblintraders.enchantment.IAncientEnchantment;
 import com.mrcrayfish.goblintraders.entity.AbstractGoblinEntity;
 import com.mrcrayfish.goblintraders.trades.TradeManager;
 import net.minecraft.core.HolderLookup;
@@ -12,6 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -34,6 +36,7 @@ public class GoblinTraders
         bus.addListener(this::onGatherData);
         bus.addListener(this::onEntityAttributeCreation);
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListener);
+        MinecraftForge.EVENT_BUS.addListener(this::onAnvilUpdate);
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event)
@@ -64,5 +67,18 @@ public class GoblinTraders
     public void addReloadListener(AddReloadListenerEvent event)
     {
         event.addListener(TradeManager.instance());
+    }
+
+    public void onAnvilUpdate(AnvilUpdateEvent event)
+    {
+        // Disable ancient enchantments on anvil
+        if(event.getRight().getEnchantments().entrySet().stream().anyMatch(entry -> {
+            if(entry.getKey().value() instanceof IAncientEnchantment) {
+                return Config.SERVER.ancientEnchantments.goblinsOnly.get();
+            }
+            return false;
+        })) {
+            event.setCanceled(true);
+        };
     }
 }

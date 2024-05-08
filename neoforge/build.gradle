@@ -11,6 +11,11 @@ base {
     archivesName = "${mod_id}-neoforge"
 }
 
+def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+if (at.exists()) {
+    minecraft.accessTransformers.file at
+}
+
 runs {
     configureEach {
         modSource project.sourceSets.main

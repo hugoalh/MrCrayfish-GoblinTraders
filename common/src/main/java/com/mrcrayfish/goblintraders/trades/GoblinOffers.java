@@ -1,9 +1,8 @@
 package com.mrcrayfish.goblintraders.trades;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.trading.MerchantOffers;
 
 /**
@@ -15,8 +14,10 @@ public class GoblinOffers extends MerchantOffers
 
     public GoblinOffers(CompoundTag tag)
     {
-        CODEC.decode(NbtOps.INSTANCE, tag).result().ifPresent(pair -> {
-            this.addAll(pair.getFirst());
+        CODEC.parse(NbtOps.INSTANCE, tag).result().ifPresent(offers -> {
+            offers.forEach(offer -> {
+                this.add(new GoblinMerchantOffer(offer));
+            });
         });
     }
 }

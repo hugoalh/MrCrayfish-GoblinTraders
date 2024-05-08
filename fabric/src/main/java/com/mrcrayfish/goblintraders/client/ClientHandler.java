@@ -5,10 +5,13 @@ import com.mrcrayfish.goblintraders.client.renderer.entity.GoblinTraderRenderer;
 import com.mrcrayfish.goblintraders.client.renderer.entity.model.GoblinTraderModel;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.core.ModItems;
+import com.mrcrayfish.goblintraders.core.ModMenuTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.world.item.CreativeModeTabs;
 
 /**
@@ -27,5 +30,6 @@ public class ClientHandler implements ClientModInitializer
             entries.accept(ModItems.GOBLIN_TRADER_SPAWN_EGG.get());
             entries.accept(ModItems.VEIN_GOBLIN_TRADER_SPAWN_EGG.get());
         });
+        MenuScreens.register(ModMenuTypes.GOBLIN_MERCHANT.get(), MerchantScreen::new);
     }
 }
