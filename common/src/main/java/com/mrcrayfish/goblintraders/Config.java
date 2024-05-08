@@ -165,13 +165,13 @@ public final class Config
                 public final Trade uncommon = new Trade(3, 5, 1.0);
 
                 @ConfigProperty(name = "rare")
-                public final Trade rare = new Trade(3, 4, 1.0);
+                public final Trade rare = new Trade(2, 3, 1.0);
 
                 @ConfigProperty(name = "epic")
-                public final Trade epic = new Trade(0, 2, 1.0);
+                public final Trade epic = new Trade(1, 2, 1.0);
 
                 @ConfigProperty(name = "legendary")
-                public final Trade legendary = new Trade(1, 1, 0.1); // TODO increase count and chance
+                public final Trade legendary = new Trade(1, 2, 0.4);
 
                 public IRaritySettings getSettings(TradeRarity rarity)
                 {
