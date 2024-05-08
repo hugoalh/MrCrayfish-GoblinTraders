@@ -34,7 +34,6 @@ public class MerchantMenuMixin
     @Final
     private MerchantContainer tradeContainer;
 
-    // TODO move to class
     @SuppressWarnings("DataFlowIssue")
     @Inject(method = "moveFromInventoryToPaymentSlot", at = @At(value = "HEAD"), cancellable = true)
     private void goblinTraders$moveItem(int tradeIndex, ItemCost cost, CallbackInfo ci)
