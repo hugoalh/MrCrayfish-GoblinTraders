@@ -29,7 +29,7 @@ public final class Config
         public static class AncientEnchantments
         {
             @ConfigProperty(name = "bonusLevels", comment = "The amount of extra levels to apply on top of the max level of a non-ancient enchantment")
-            public final IntProperty bonusLevels = IntProperty.create(1, 1, 64);
+            public final IntProperty bonusLevels = IntProperty.create(2, 1, 64);
 
             @ConfigProperty(name = "goblinsOnly", comment = "If true, ancient enchantments are only available from goblin trades. Prevents enchantment table, villager trades, and treasure chests.")
             public final BoolProperty goblinsOnly = BoolProperty.create(true);
