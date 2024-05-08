@@ -355,7 +355,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(Enchantments.RESPIRATION, 3);
                 mutable.set(Enchantments.AQUA_AFFINITY, 1);
             }), Component.translatable("custom.goblintraders.goblin_helmet").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
             .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_HELMET))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -401,7 +401,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(Enchantments.SOUL_SPEED, 3);
                 mutable.set(Enchantments.THORNS, 3);
             }), Component.translatable("custom.goblintraders.goblin_boots").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
             .setSecondaryPaymentStack(new ItemCost(Items.DIAMOND_BOOTS))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -601,7 +601,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_pickaxe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_PICKAXE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -613,7 +613,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_SHARPNESS.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_axe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_AXE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -625,7 +625,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(Enchantments.SILK_TOUCH, 1);
             }), Component.translatable("custom.goblintraders.ancient_shovel").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_SHOVEL))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -636,7 +636,7 @@ public class GoblinTradeProvider extends TradeProvider
             .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_HOE, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_hoe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_HOE))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -652,7 +652,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_KNOCKBACK.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_LOOTING.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_sword").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_SWORD))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -665,8 +665,8 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_PUNCH.get(), 1);
                 mutable.set(Enchantments.FLAME, 1);
                 mutable.set(Enchantments.INFINITY, 1);
-            }), Component.translatable("custom.goblintraders.ancient_bow").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            }), Component.translatable("custom.goblintraders.ancient_bow").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.BOW))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -679,8 +679,8 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_RESPIRATION.get(), 1);
                 mutable.set(Enchantments.AQUA_AFFINITY, 1);
-            }), Component.translatable("custom.goblintraders.ancient_helmet").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            }), Component.translatable("custom.goblintraders.ancient_helmet").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_HELMET))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
@@ -694,7 +694,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_BLAST_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_FIRE_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
-            }), Component.translatable("custom.goblintraders.ancient_chestplate").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            }), Component.translatable("custom.goblintraders.ancient_chestplate").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
             .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_CHESTPLATE))
             .setPriceMultiplier(0F)
@@ -710,7 +710,7 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_FIRE_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_SWIFT_SNEAK.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
-            }), Component.translatable("custom.goblintraders.ancient_leggings").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
+            }), Component.translatable("custom.goblintraders.ancient_leggings").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
             .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_LEGGINGS))
             .setPriceMultiplier(0F)
@@ -725,8 +725,8 @@ public class GoblinTradeProvider extends TradeProvider
                 mutable.set(ModEnchantments.ANCIENT_DEPTH_STRIDER.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_SOUL_SPEED.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
-            }), Component.translatable("custom.goblintraders.ancient_boots").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
-            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 2))
+            }), Component.translatable("custom.goblintraders.ancient_boots").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
+            .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
             .setSecondaryPaymentStack(new ItemCost(Items.NETHERITE_BOOTS))
             .setPriceMultiplier(0F)
             .setMaxTrades(1)
