@@ -405,7 +405,7 @@ public abstract class AbstractGoblinEntity extends TraderCreatureEntity implemen
             this.getNavigation().stop();
             this.entityData.set(STUNNED, true);
             this.entityData.set(STUN_ROTATION, this.getStunRotation(source.getEntity()));
-            this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop); //TODO test
+            this.goalSelector.getAvailableGoals().forEach(WrappedGoal::stop);
             this.stunDelay = 20;
         }
         return attacked;
