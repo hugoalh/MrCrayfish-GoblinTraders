@@ -8,7 +8,7 @@ version = "${mod_version}"
 displayName = "${mod_name}"
 updateJSONURL = "https://mrcrayfish.com/api/mod_update/neoforge/${mod_id}"
 displayURL = "${mod_homepage}"
-logoFile = "assets/${mod_id}/icon.png"
+logoFile = "assets/${mod_id}/banner.png"
 authors = "${mod_author}"
 description = '''${mod_desc}'''
 
