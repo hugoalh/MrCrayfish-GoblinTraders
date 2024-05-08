@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mrcrayfish.goblintraders.Constants;
 import com.mrcrayfish.goblintraders.entity.TraderCreatureEntity;
@@ -36,6 +35,7 @@ import java.util.concurrent.Executor;
  */
 public class TradeManager implements PreparableReloadListener
 {
+    public static final String RESOURCE_DIR = "goblin_trades";
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final Gson GSON = new GsonBuilder().create();
     private static TradeManager instance;
@@ -89,7 +89,7 @@ public class TradeManager implements PreparableReloadListener
     {
         List<CompletableFuture<Pair<EntityType<?>, EntityTrades>>> list = this.traders.stream().map(type -> {
             return CompletableFuture.supplyAsync(() -> {
-                String folder = String.format("trades/%s", EntityType.getKey(type).getPath());
+                String folder = String.format("%s/%s", RESOURCE_DIR, EntityType.getKey(type).getPath());
                 List<ResourceLocation> resources = new ArrayList<>(manager.listResources(folder, (fileName) -> fileName.getPath().endsWith(".json")).keySet());
                 resources.sort((r1, r2) -> {
                     if(r1.getNamespace().equals(r2.getNamespace())) return 0;

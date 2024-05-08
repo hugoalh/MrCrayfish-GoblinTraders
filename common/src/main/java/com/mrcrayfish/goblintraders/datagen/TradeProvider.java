@@ -1,10 +1,10 @@
 package com.mrcrayfish.goblintraders.datagen;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import com.mrcrayfish.goblintraders.Constants;
+import com.mrcrayfish.goblintraders.trades.TradeManager;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.ITradeType;
 import net.minecraft.core.HolderLookup;
@@ -12,9 +12,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerTrades;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,7 +20,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -36,7 +33,7 @@ public abstract class TradeProvider implements DataProvider
 
     protected TradeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
-        this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "trades");
+        this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, TradeManager.RESOURCE_DIR);
         this.lookupProvider = lookupProvider;
     }
 
