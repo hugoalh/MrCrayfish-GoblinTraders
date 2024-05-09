@@ -59,7 +59,6 @@ configurations {
 
 dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 // Declare capabilities on the outgoing configurations.
