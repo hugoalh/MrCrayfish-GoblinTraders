@@ -4,7 +4,6 @@ import com.mrcrayfish.goblintraders.core.ModEnchantments;
 import com.mrcrayfish.goblintraders.core.ModEntities;
 import com.mrcrayfish.goblintraders.trades.TradeRarity;
 import com.mrcrayfish.goblintraders.trades.type.BasicTrade;
-import com.mrcrayfish.goblintraders.trades.type.BasicTrade.Builder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPredicate;
@@ -12,19 +11,17 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.Unbreakable;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -272,7 +269,7 @@ public class GoblinTradeProvider extends TradeProvider
         }
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_PICKAXE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_PICKAXE, 1, mutable -> {
                 mutable.set(Enchantments.EFFICIENCY, 5);
                 mutable.set(Enchantments.FORTUNE, 3);
             }), Component.translatable("custom.goblintraders.goblin_pickaxe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
@@ -284,7 +281,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_AXE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_AXE, 1, mutable -> {
                 mutable.set(Enchantments.EFFICIENCY, 5);
                 mutable.set(Enchantments.SHARPNESS, 5);
             }), Component.translatable("custom.goblintraders.goblin_axe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
@@ -296,7 +293,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_SHOVEL, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_SHOVEL, 1, mutable -> {
                 mutable.set(Enchantments.EFFICIENCY, 5);
                 mutable.set(Enchantments.SILK_TOUCH, 1);
             }), Component.translatable("custom.goblintraders.goblin_shovel").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
@@ -308,7 +305,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_HOE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_HOE, 1, mutable -> {
                 mutable.set(Enchantments.FORTUNE, 3);
             }), Component.translatable("custom.goblintraders.goblin_hoe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN))))
             .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 1))
@@ -319,7 +316,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_SWORD, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_SWORD, 1, mutable -> {
                 mutable.set(Enchantments.SHARPNESS, 5);
                 mutable.set(Enchantments.SMITE, 5);
                 mutable.set(Enchantments.BANE_OF_ARTHROPODS, 5);
@@ -335,7 +332,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
                 mutable.set(Enchantments.POWER, 5);
                 mutable.set(Enchantments.PUNCH, 2);
                 mutable.set(Enchantments.FLAME, 1);
@@ -349,7 +346,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_HELMET, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_HELMET, 1, mutable -> {
                 mutable.set(Enchantments.PROTECTION, 4);
                 mutable.set(Enchantments.THORNS, 3);
                 mutable.set(Enchantments.RESPIRATION, 3);
@@ -363,7 +360,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_CHESTPLATE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_CHESTPLATE, 1, mutable -> {
                 mutable.set(Enchantments.PROTECTION, 4);
                 mutable.set(Enchantments.PROJECTILE_PROTECTION, 3);
                 mutable.set(Enchantments.BLAST_PROTECTION, 3);
@@ -378,7 +375,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_LEGGINGS, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_LEGGINGS, 1, mutable -> {
                 mutable.set(Enchantments.PROTECTION, 4);
                 mutable.set(Enchantments.PROJECTILE_PROTECTION, 3);
                 mutable.set(Enchantments.BLAST_PROTECTION, 3);
@@ -394,7 +391,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.DIAMOND_BOOTS, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.DIAMOND_BOOTS, 1, mutable -> {
                 mutable.set(Enchantments.PROTECTION, 4);
                 mutable.set(Enchantments.FEATHER_FALLING, 4);
                 mutable.set(Enchantments.DEPTH_STRIDER, 3);
@@ -597,7 +594,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());*/
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_PICKAXE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_PICKAXE, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_pickaxe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
@@ -609,7 +606,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_AXE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_AXE, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_SHARPNESS.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_axe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
@@ -621,7 +618,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_SHOVEL, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_SHOVEL, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_EFFICIENCY.get(), 1);
                 mutable.set(Enchantments.SILK_TOUCH, 1);
             }), Component.translatable("custom.goblintraders.ancient_shovel").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
@@ -633,7 +630,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_HOE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_HOE, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_FORTUNE.get(), 1);
             }), Component.translatable("custom.goblintraders.ancient_hoe").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY))))
             .setPaymentStack(new ItemCost(Items.DRAGON_HEAD, 3))
@@ -644,7 +641,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_SWORD, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_SWORD, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_SHARPNESS.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_SMITE.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_BANE_OF_ARTHROPODS.get(), 1);
@@ -660,7 +657,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.BOW, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_POWER.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_PUNCH.get(), 1);
                 mutable.set(Enchantments.FLAME, 1);
@@ -674,7 +671,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_HELMET, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_HELMET, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_THORNS.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_RESPIRATION.get(), 1);
@@ -688,7 +685,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_CHESTPLATE, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_CHESTPLATE, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_PROJECTILE_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_BLAST_PROTECTION.get(), 1);
@@ -703,7 +700,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_LEGGINGS, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_LEGGINGS, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_PROJECTILE_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_BLAST_PROTECTION.get(), 1);
@@ -719,7 +716,7 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
 
         this.addTrade(ModEntities.VEIN_GOBLIN_TRADER.get(), TradeRarity.LEGENDARY, BasicTrade.Builder.create()
-            .setOfferStack(unbreakable(nameItem(createEnchantedItem(Items.NETHERITE_BOOTS, 1, mutable -> {
+            .setOfferStack(durable(nameItem(createEnchantedItem(Items.NETHERITE_BOOTS, 1, mutable -> {
                 mutable.set(ModEnchantments.ANCIENT_PROTECTION.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_FEATHER_FALLING.get(), 1);
                 mutable.set(ModEnchantments.ANCIENT_DEPTH_STRIDER.get(), 1);
@@ -734,9 +731,12 @@ public class GoblinTradeProvider extends TradeProvider
             .build());
     }
 
-    private static ItemStack unbreakable(ItemStack stack)
+    private static ItemStack durable(ItemStack stack)
     {
-        stack.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
+        stack.set(DataComponents.MAX_DAMAGE, stack.getMaxDamage() * 10);
+        stack.set(DataComponents.LORE, ItemLore.EMPTY.withLineAdded(
+            Component.translatable("custom.goblintraders.durable").withStyle(ChatFormatting.BLUE)
+        ));
         return stack;
     }
 
