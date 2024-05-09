@@ -56,6 +56,12 @@ jobs:
         echo "KEYSTORE_PASS=${{ secrets.MRCRAYFISH_JKS_PASSPHRASE }}" >> $GITHUB_ENV
     - name: Make gradlew executable
       run: chmod +x ./gradlew
+    - name: Dump Dependencies
+      env:
+        GPR_USER: "MrCrayfish"
+        GPR_KEY: ${{ secrets.GPR_TOKEN }}
+        TARGET_LOADER: "forge"
+      run: ./gradlew :forge:dependencies
     - name: Run Data Gen
       env:
         GPR_USER: "MrCrayfish"
