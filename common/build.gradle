@@ -12,7 +12,7 @@ minecraft {
 }
 
 dependencies {
-    compileOnly "org.spongepowered:mixin:0.8.6-SNAPSHOT"
+    compileOnly "org.spongepowered:mixin:0.8.5"
     implementation "com.google.code.findbugs:jsr305:3.0.2"
     compileOnly "com.mrcrayfish:framework-common:${minecraft_version}-${framework_version}"
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
