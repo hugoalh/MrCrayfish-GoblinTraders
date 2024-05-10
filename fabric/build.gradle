@@ -13,6 +13,12 @@ sourceSets {
     }
 }
 
+fabricApi {
+    configureDataGeneration {
+        outputDirectory.set(file("src/generated"))
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
@@ -31,27 +37,4 @@ loom {
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
-    runs {
-        client {
-            client()
-            setConfigName("Fabric Client")
-            ideConfigGenerated(true)
-            runDir("run")
-        }
-        server {
-            server()
-            setConfigName("Fabric Server")
-            ideConfigGenerated(true)
-            runDir("run")
-        }
-        datagen {
-            setConfigName("Fabric Data")
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
-            runDir "build/datagen"
-        }
-    }
 }
-
-sourceSets.main.resources.srcDir 'src/generated/resources'
