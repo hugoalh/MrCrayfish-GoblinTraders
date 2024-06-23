@@ -39,7 +39,6 @@ public class GoblinTraders
         bus.addListener(this::onEntityAttributeCreation);
         NeoForge.EVENT_BUS.addListener(this::addReloadListener);
         NeoForge.EVENT_BUS.addListener(this::onAnvilUpdate);
-        //NeoForge.EVENT_BUS.addListener(this::onGetEnchantLevel);
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event)

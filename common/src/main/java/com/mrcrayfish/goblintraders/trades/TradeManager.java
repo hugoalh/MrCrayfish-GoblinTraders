@@ -113,9 +113,14 @@ public class TradeManager implements PreparableReloadListener
                 return Pair.<EntityType<?>, EntityTrades>of(type, builder.build());
             }, backgroundExecutor);
         }).toList();
-        return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new)).thenCompose(stage::wait).thenAcceptAsync((obj) -> {
-            this.entityToTrades = list.stream().map(CompletableFuture::join).collect(ImmutableMap.toImmutableMap(Pair::left, Pair::right));
-        }, gameExecutor);
+
+        return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new))
+            .thenCompose(stage::wait)
+            .thenAcceptAsync(obj -> {
+                this.entityToTrades = list.stream()
+                    .map(CompletableFuture::join)
+                    .collect(ImmutableMap.toImmutableMap(Pair::left, Pair::right));
+            }, gameExecutor);
     }
 
     private void deserializeTrades(ResourceManager manager, EntityTrades.Builder builder, TradeRarity rarity, LinkedHashSet<ResourceLocation> resources)
