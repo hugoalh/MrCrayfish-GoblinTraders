@@ -35,7 +35,7 @@ public final class Config
             public final BoolProperty goblinsOnly = BoolProperty.create(true);
 
             @ConfigProperty(name = "treasureOnly", comment = "If true, only allows ancient enchantments to only appear in treasure chests. goblinsOnly must be disabled for this property to have any effect")
-            public final BoolProperty treasureOnly = BoolProperty.create(false);
+            public final BoolProperty treasureOnly = BoolProperty.create(true);
         }
     }
 
