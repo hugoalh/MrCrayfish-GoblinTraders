@@ -4,6 +4,7 @@ import com.mrcrayfish.goblintraders.Config;
 import com.mrcrayfish.goblintraders.core.ModEnchantments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -46,6 +47,12 @@ public class AncientWaterWalkerEnchantment extends WaterWalkerEnchantment implem
     public boolean isDiscoverable()
     {
         return !Config.SERVER.ancientEnchantments.goblinsOnly.get();
+    }
+
+    @Override
+    public boolean isTradeable()
+    {
+        return !Config.SERVER.ancientEnchantments.goblinsOnly.get() && !Config.SERVER.ancientEnchantments.treasureOnly.get();
     }
 
     @Override

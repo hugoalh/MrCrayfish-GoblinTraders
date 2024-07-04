@@ -49,6 +49,12 @@ public class AncientEnchantment extends Enchantment implements IAncientEnchantme
     }
 
     @Override
+    public boolean isTradeable()
+    {
+        return !Config.SERVER.ancientEnchantments.goblinsOnly.get() && !Config.SERVER.ancientEnchantments.treasureOnly.get();
+    }
+
+    @Override
     public Enchantment getAncientEnchantment()
     {
         return this;

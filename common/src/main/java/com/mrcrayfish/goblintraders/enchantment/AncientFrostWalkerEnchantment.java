@@ -48,6 +48,12 @@ public class AncientFrostWalkerEnchantment extends FrostWalkerEnchantment implem
     }
 
     @Override
+    public boolean isTradeable()
+    {
+        return !Config.SERVER.ancientEnchantments.goblinsOnly.get() && !Config.SERVER.ancientEnchantments.treasureOnly.get();
+    }
+
+    @Override
     public Enchantment getAncientEnchantment()
     {
         return this;
