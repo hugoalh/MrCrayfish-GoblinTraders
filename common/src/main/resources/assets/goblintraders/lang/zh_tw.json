@@ -1,8 +1,8 @@
 {
     "entity.goblintraders.goblin_trader": "哥布林商人",
     "entity.goblintraders.vein_goblin_trader": "熔岩哥布林商人",
-    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "惱怒的咕嚕聲",
-    "subtitle.goblintraders.goblin_trader.idle_grunt": "空閒的咕嚕聲",
+    "subtitle.goblintraders.goblin_trader.annoyed_grunt": "哥布林商人惱怒的咕嚕聲",
+    "subtitle.goblintraders.goblin_trader.idle_grunt": "哥布林商人閒散的咕嚕聲",
     "item.goblintraders.goblin_trader_spawn_egg": "哥布林商人生怪蛋",
     "item.goblintraders.vein_goblin_trader_spawn_egg": "熔岩哥布林商人生怪蛋",
     "stat.goblintraders.trade_with_goblin": "已與哥布林交易",
